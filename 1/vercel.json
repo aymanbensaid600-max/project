@@ -1,14 +1,13 @@
 {
   "version": 2,
-  "functions": {
-    "main.py": {
-      "runtime": "vercel-python@1.1.0"
-    }
-  },
-  "routes": [
+  "builds": [
     {
-      "src": "/(.*)",
-      "dest": "/main.py"
+      "src": "index.html",
+      "use": "@vercel/static"
     }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
+
