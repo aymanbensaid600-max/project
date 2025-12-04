@@ -1,0 +1,3 @@
+flask
+pySide6
+matplotlib
