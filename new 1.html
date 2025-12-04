@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Application Météo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #e8f0fe;
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+        .card {
+            background: white;
+            width: 380px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        select, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            background: #1976d2;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0d47a1;
+        }
+        .weather-box {
+            margin-top: 25px;
+            padding: 15px;
+            border-radius: 12px;
+            background: #f1f8ff;
+            text-align: center;
+            display: none;
+        }
+        .temp {
+            font-size: 40px;
+            font-weight: bold;
+        }
+        .desc {
+            font-size: 18px;
+            margin-top: 5px;
+        }
+        .details {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        img.icon {
+            width: 100px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🌤 Application Météo</h2>
+
+    <label for="ville">Choisissez une ville :</label>
+    <select id="ville">
+        <option value="Rabat">Rabat</option>
+        <option value="Casablanca">Casablanca</option>
+        <option value="Marrakech">Marrakech</option>
+        <option value="Paris">Paris</option>
+        <option value="London">London</option>
+    </select>
+
+    <button onclick="getWeather()">Afficher la météo</button>
+
+    <div class="weather-box" id="weather">
+        <h3 id="cityName"></h3>
+        <img id="icon" class="icon" src="">
+        <div class="temp" id="temperature"></div>
+        <div class="desc" id="description"></div>
+
+        <div class="details">
+            💧 Humidité : <span id="humidity"></span>% <br>
+            💨 Vent : <span id="wind"></span> m/s
+        </div>
+    </div>
+</div>
+
+<script>
+function getWeather() {
+    const apiKey = "f47b91ac11d66ff45d09c48179ab0d13"; // ← Mets ta clé ici !
+    const city = document.getElementById("ville").value;
+
+    const url =
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&lang=fr&appid=${apiKey}`;
+
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("weather").style.display = "block";
+
+            document.getElementById("cityName").innerText = data.name;
+            document.getElementById("temperature").innerText = data.main.temp + "°C";
+            document.getElementById("description").innerText = data.weather[0].description;
+            document.getElementById("humidity").innerText = data.main.humidity;
+            document.getElementById("wind").innerText = data.wind.speed;
+
+            // Icône météo
+            const iconCode = data.weather[0].icon;
+            document.getElementById("icon").src =
+                `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+        })
+        .catch(err => {
+            alert("Erreur : impossible de récupérer la météo (clé API incorrecte ?)");
+        });
+}
+</script>
+
+</body>
+</html>
